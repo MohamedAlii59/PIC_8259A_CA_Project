@@ -1,0 +1,24 @@
+module IRR(
+    input reset,
+    input LTIM,//For determining whether it will be edge or level triggered
+    input ir0,
+    input ir1,
+    input ir2,
+    input ir3,
+    input ir4,
+    input ir5,
+    input ir6,
+    input ir7,
+    output [7:0] irr);
+    reg [7:0] cur_irr;
+always @(reset) begin
+    cur_irr <=( reset )?8'b00000000:cur_irr;
+end
+    always @((ir0&LTIM),(ir1&LTIM),(ir2&LTIM),(ir3&LTIM),(ir4&LTIM),(ir5&LTIM),(ir6&LTIM),(ir7&LTIM))begin
+         cur_irr<={ir0,ir1,ir2,ir3,ir4,ir5,ir6,ir7};
+    end
+    always @(posedge (ir0&~LTIM), posedge (ir1&~LTIM), posedge (ir2&~LTIM), posedge (ir3&~LTIM), posedge (ir4&~LTIM), posedge (ir5&~LTIM), posedge (ir6&~LTIM), posedge (ir7&~LTIM))begin
+         cur_irr<={ir0,ir1,ir2,ir3,ir4,ir5,ir6,ir7};
+end
+assign irr=cur_irr;
+endmodule
