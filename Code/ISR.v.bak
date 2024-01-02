@@ -1,0 +1,8 @@
+module ISR(
+    input [0:7] irr,
+    output [0:7] isr,
+    input isprior);
+    reg [0:7] isrreg;
+    isrreg=(isprior)?irr:isr;
+    assign isr=isrreg;
+endmodule
