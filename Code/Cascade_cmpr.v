@@ -1,0 +1,44 @@
+module Cascade_cmpr(
+    inout [2:0] CAS,
+    input SPENn,
+    output reg CLsig,
+    input [2:0] Y,
+    input buff,
+    output reg S
+);
+
+    /* Address of the slave that was interrupted */
+    reg M;
+    reg [2:0] X;
+    reg [2:0] internal_CAS; // Internal signal for bidirectional port
+
+    assign CAS = internal_CAS; // Assign inout port value to internal signal using continuous assignment
+
+    always @(*) begin
+        if (~buff) begin
+            if (SPENn)
+                M = 1;
+            else
+                M = 0;
+        end
+        if (M /* M is equal to D[2] when we extract this info from Ctrllgc */) begin
+            X = Y;
+            internal_CAS = X; // Assign value to internal signal using blocking assignment
+        end
+        else begin
+            if (internal_CAS == Y) begin // Compare with internal signal
+                CLsig = 1; // Signal informs the ctrl lgc to release the ISR address
+            end
+            else
+                CLsig = 0;
+        end
+        S = ~M;
+    end
+
+    /*
+    1. 8259A outputs are master while the inputs are slaves 
+    2. 8259A (Master) sends the ID on CAS
+    3. Slave sends its routine 
+    */
+
+endmodule

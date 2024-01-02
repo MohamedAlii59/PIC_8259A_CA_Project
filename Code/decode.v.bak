@@ -1,0 +1,24 @@
+
+module decode( 
+input [0:2] in,
+output [0:7] out, 
+input en);
+  reg [0:7] outreg;
+      if (en) 
+        begin
+          case (in)
+              3'b000: outreg = 8'b00000001;
+              3'b001: outreg = 8'b00000010;
+              3'b010: outreg = 8'b00000100;
+              3'b011: outreg = 8'b00001000;
+              3'b100: outreg = 8'b00010000;
+              3'b101: outreg = 8'b00100000;
+              3'b110: outreg = 8'b01000000;
+              3'b111: outreg = 8'b10000000;
+              default: outreg = 8'b00000000;
+          endcase
+      end 
+      else 
+      outreg=8'b00000000;
+assign out=outreg;
+endmodule

@@ -1,0 +1,17 @@
+module encode(
+    input [0:7] i,
+    output [0:2] y);
+    reg [0:2] out;
+    always@(*)begin 
+    if(i[7]==1) out=3'b111;
+        else if(i[6]==1) out=3'b110;
+        else if(i[5]==1) out=3'b101;
+        else if(i[4]==1) out=3'b100;
+        else if(i[3]==1) out=3'b011;
+        else if(i[2]==1) out=3'b010;
+        else if(i[1]==1) out=3'b001;
+        else
+        out=3'b000;
+    assign y=out;
+end
+endmodule
